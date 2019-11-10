@@ -97,3 +97,171 @@ C:\Kubernetes>kubectl.exe get pods
 NAME                              READY   STATUS    RESTARTS   AGE
 hello-minikube-797f975945-s9s7d   1/1     Running   0          75s
 
+C:\Kubernetes>kubectl expose deployment hello-minikube --type=NodePort --port=8080
+service/hello-minikube exposed
+
+C:\Kubernetes>kubectl.exe get pods
+NAME                              READY   STATUS    RESTARTS   AGE
+hello-minikube-797f975945-s9s7d   1/1     Running   0          2m57s
+
+C:\Kubernetes>kubectl.exe get pod
+NAME                              READY   STATUS    RESTARTS   AGE
+hello-minikube-797f975945-s9s7d   1/1     Running   0          3m2s
+
+C:\Kubernetes>minikube service hello-minikube --url
+http://192.168.99.102:30653
+
+C:\Kubernetes>minikube.exe service hello-minikube --url
+http://192.168.99.102:30653
+
+Now access the URL and check.
+
+==================================================================
+
+Let's use a Yaml file now :
+
+https://github.com/cunningWolf/Kubernetes/edit/master/pod.yaml
+
+pod.yml
+#######
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp-pod
+  labels:
+    app: myapp
+spec:
+  containers:
+    -  name: nginx-container
+       image: nginx
+       resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+
+
+Now execute the YML
+
+C:\Kubernetes>kubectl.exe create -f pod.yml
+pod/myapp-pod created
+
+C:\Kubernetes>kubectl.exe get pod
+NAME                              READY   STATUS              RESTARTS   AGE
+hello-minikube-797f975945-s9s7d   1/1     Running             0          38m
+myapp-pod                         0/1     ContainerCreating   0          6s
+
+C:\Kubernetes>kubectl.exe describe pod
+Name:         hello-minikube-797f975945-s9s7d
+Namespace:    default
+Priority:     0
+Node:         minikube/192.168.99.102
+Start Time:   Sun, 10 Nov 2019 13:05:02 +0530
+Labels:       app=hello-minikube
+              pod-template-hash=797f975945
+Annotations:  <none>
+Status:       Running
+IP:           172.17.0.4
+IPs:
+  IP:           172.17.0.4
+Controlled By:  ReplicaSet/hello-minikube-797f975945
+Containers:
+  echoserver:
+    Container ID:   docker://b04549bcf2524c3890124a5bac0ae3b47e3ab3bb8e9ebf8d25fc27e7e6915558
+    Image:          k8s.gcr.io/echoserver:1.10
+    Image ID:       docker-pullable://k8s.gcr.io/echoserver@sha256:cb5c1bddd1b5665e1867a7fa1b5fa843a47ee433bbb75d4293888b71def53229
+    Port:           <none>
+    Host Port:      <none>
+    State:          Running
+      Started:      Sun, 10 Nov 2019 13:05:28 +0530
+    Ready:          True
+    Restart Count:  0
+    Environment:    <none>
+    Mounts:
+          /var/run/secrets/kubernetes.io/serviceaccount from default-token-llmp4 (ro)
+Conditions:
+  Type              Status
+  Initialized       True
+  Ready             True
+  ContainersReady   True
+  PodScheduled      True
+Volumes:
+  default-token-llmp4:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  default-token-llmp4
+    Optional:    false
+QoS Class:       BestEffort
+Node-Selectors:  <none>
+Tolerations:     node.kubernetes.io/not-ready:NoExecute for 300s
+                 node.kubernetes.io/unreachable:NoExecute for 300s
+Events:
+  Type    Reason     Age        From               Message
+  ----    ------     ----       ----               -------
+  Normal  Scheduled  <unknown>  default-scheduler  Successfully assigned default/hello-minikube-797f975945-s9s7d to minikube
+  Normal  Pulling    39m        kubelet, minikube  Pulling image "k8s.gcr.io/echoserver:1.10"
+  Normal  Pulled     39m        kubelet, minikube  Successfully pulled image "k8s.gcr.io/echoserver:1.10"
+  Normal  Created    39m        kubelet, minikube  Created container echoserver
+  Normal  Started    39m        kubelet, minikube  Started container echoserver
+
+
+Name:         myapp-pod
+Namespace:    default
+Priority:     0
+Node:         minikube/192.168.99.102
+Start Time:   Sun, 10 Nov 2019 13:43:49 +0530
+Labels:       app=myapp
+Annotations:  <none>
+Status:       Running
+IP:           172.17.0.5
+IPs:
+  IP:  172.17.0.5
+Containers:
+  nginx-container:
+    Container ID:   docker://d9eca8ed7f5ef49cceacb42c686176cd6ca9c7b4733bec1c1197a4afd7c31f2d
+    Image:          nginx
+    Image ID:       docker-pullable://nginx@sha256:922c815aa4df050d4df476e92daed4231f466acc8ee90e0e774951b0fd7195a4
+    Port:           <none>
+    Host Port:      <none>
+    State:          Running
+      Started:      Sun, 10 Nov 2019 13:44:49 +0530
+    Ready:          True
+    Restart Count:  0
+    Limits:
+      cpu:     500m
+      memory:  128Mi
+    Requests:
+      cpu:        250m
+      memory:     64Mi
+    Environment:  <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from default-token-llmp4 (ro)
+      Conditions:
+  Type              Status
+  Initialized       True
+  Ready             True
+  ContainersReady   True
+  PodScheduled      True
+Volumes:
+  default-token-llmp4:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  default-token-llmp4
+    Optional:    false
+QoS Class:       Burstable
+Node-Selectors:  <none>
+Tolerations:     node.kubernetes.io/not-ready:NoExecute for 300s
+                 node.kubernetes.io/unreachable:NoExecute for 300s
+Events:
+  Type    Reason     Age        From               Message
+  ----    ------     ----       ----               -------
+  Normal  Scheduled  <unknown>  default-scheduler  Successfully assigned default/myapp-pod to minikube
+  Normal  Pulling    65s        kubelet, minikube  Pulling image "nginx"
+  Normal  Pulled     7s         kubelet, minikube  Successfully pulled image "nginx"
+  Normal  Created    7s         kubelet, minikube  Created container nginx-container
+  Normal  Started    6s         kubelet, minikube  Started container nginx-container
+  =======================================================================================================
+  
+  
+
