@@ -1,1 +1,26 @@
+Kubernetes Documentation :
+
+1. Install virtual box.  https://www.virtualbox.org/wiki/Downloads
+
+2. Install Minikube
+https://kubernetes.io/docs/home/
+
+Learn how to use Kubernetes -> Install Minikube
+
+C:\Users\Admin>clear
+'clear' is not recognized as an internal or external command,
+operable program or batch file.
+
+C:\Users\Admin>cd ..
+
+C:\Users>cd ..
+
+C:\>cd kubernetes
+
+C:\Kubernetes>minikube.exe start
+
+3. Install Kubectl
+
+
+
 
