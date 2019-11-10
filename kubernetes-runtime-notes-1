@@ -263,5 +263,29 @@ Events:
   Normal  Started    6s         kubelet, minikube  Started container nginx-container
   =======================================================================================================
   
+  kubeadm :
   
+  [node1 voting-app-on-k8s-local]$ kubectl get namespaces
+NAME          STATUS    AGE
+default       Active    28m
+kube-public   Active    28m
+kube-system   Active    28m
+[node1 voting-app-on-k8s-local]$ kubectl get pods --namespace=kube-system
+NAME                            READY     STATUS    RESTARTS   AGE
+coredns-78fcdf6894-9kvmk        1/1       Running   0          28m
+coredns-78fcdf6894-fvwmr        1/1       Running   0          28m
+etcd-node1                      1/1       Running   0          27m
+kube-apiserver-node1            1/1       Running   0          28m
+kube-controller-manager-node1   1/1       Running   0          28m
+kube-proxy-cdsvp                1/1       Running   0          28m
+kube-scheduler-node1            1/1       Running   0          27m
+weave-net-cqvpr                 2/2       Running   0          28m
 
+
+on ubuntu :
+
+sudo apt-get update
+
+How to check docker is running
+
+docker run hello-world
